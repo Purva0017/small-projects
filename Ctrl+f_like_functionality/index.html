@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic Text Highlight</title>
+    <style>
+        /* Style for the highlighted text */
+        .highlight {
+            background-color: yellow;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Search and Highlight</h2>
+    <input type="text" id="searchInput" placeholder="Search text..." />
+    <p id="content">
+        This is a sample paragraph that the user can search through. It contains words and phrases that can be matched dynamically as you type.
+    </p>
+
+    <script>
+        const searchInput = document.getElementById('searchInput');
+        const content = document.getElementById('content');
+        const originalText = content.innerText; // Store the original text of the paragraph
+
+        searchInput.addEventListener('input', () => {
+            const searchTerm = searchInput.value.trim();
+            if (searchTerm === "") {
+                content.innerHTML = originalText; // Reset to original if no search term
+                return;
+            }
+
+            // Escape special characters for use in regular expressions
+            const escapedTerm = searchTerm.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+
+            // Create a new RegExp with the escaped term, case insensitive and global match
+            const regex = new RegExp(escapedTerm, 'gi');
+
+            // Replace matching terms with highlighted HTML
+            const highlightedText = originalText.replace(regex, match => `<span class="highlight">${match}</span>`);
+            content.innerHTML = highlightedText;
+        });
+    </script>
+
+</body>
+</html>
